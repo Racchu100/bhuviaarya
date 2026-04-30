@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Products | Bhuvi Aarya Entreprises</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .products-header {
+            padding: 8rem 0 4rem;
+            text-align: center;
+            background-color: var(--bg-secondary);
+        }
+        .filter-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+        .filter-btn {
+            padding: 0.75rem 2rem;
+            border-radius: 2rem;
+            border: 1px solid var(--border-color);
+            background: var(--card-bg);
+            color: var(--text-color);
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+        .filter-btn.active, .filter-btn:hover {
+            background-color: var(--color-primary);
+            color: white;
+            border-color: var(--color-primary);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header id="header" class="sticky">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                Bhu<span class="green">v</span>i Aar<span class="green">y</span>a<span class="yellow">Enterprises</span>
+            </a>
+            
+            <nav class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="products.html">Products</a>
+                <a href="about.html">About Us</a>
+                <a href="contact.html">Contact Us</a>
+            </nav>
+
+            <div class="header-actions">
+                <button id="theme-toggle" class="theme-toggle">
+                    <i class="fas fa-sun"></i>
+                </button>
+                <button id="mobile-menu-btn" class="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Nav -->
+    <div id="mobile-nav" class="mobile-nav">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="products.html">Products</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+        </ul>
+    </div>
+    <div id="overlay" class="overlay"></div>
+
+    <section class="products-header">
+        <div class="container">
+            <h1>Our Furniture Collection</h1>
+            <p>Explore our wide range of premium sofas and dining tables.</p>
+        </div>
+    </section>
+
+    <section class="products-grid-section">
+        <div class="container">
+            <div class="filter-tabs">
+                <button class="filter-btn active" data-filter="all">All Products</button>
+                <button class="filter-btn" data-filter="sofas">Sofas</button>
+                <button class="filter-btn" data-filter="dining">Dining Tables</button>
+                <button class="filter-btn" data-filter="glass">Glass Dining Tables</button>
+            </div>
+
+            <div class="product-grid" id="product-grid">
+                <!-- Products will be filtered here -->
+                <div class="product-card" data-category="sofas">
+                    <div class="product-img">
+                        <img src="/images/hero-sofa.png" alt="Sofa 1">
+                    </div>
+                    <div class="product-info">
+                        <h3>Luxury Velvet Sofa</h3>
+                        <p>Comfortable velvet sofa with gold-finished legs.</p>
+                        <button class="btn btn-primary" onclick="sendWhatsApp('Luxury Velvet Sofa')">Enquire on WhatsApp</button>
+                    </div>
+                </div>
+                <div class="product-card" data-category="sofas">
+                    <div class="product-img">
+                        <img src="/images/hero-sofa.png" alt="Sofa 2">
+                    </div>
+                    <div class="product-info">
+                        <h3>Modern Sectional Sofa</h3>
+                        <p>Adjustable headrests and modular design.</p>
+                        <button class="btn btn-primary" onclick="sendWhatsApp('Modern Sectional Sofa')">Enquire on WhatsApp</button>
+                    </div>
+                </div>
+                <div class="product-card" data-category="dining">
+                    <div class="product-img">
+                        <img src="/images/hero-dining.png" alt="Dining 1">
+                    </div>
+                    <div class="product-info">
+                        <h3>Oak Wood Dining Set</h3>
+                        <p>Solid oak wood table with 6 cushioned chairs.</p>
+                        <button class="btn btn-primary" onclick="sendWhatsApp('Oak Wood Dining Set')">Enquire on WhatsApp</button>
+                    </div>
+                </div>
+                <div class="product-card" data-category="glass">
+                    <div class="product-img">
+                        <img src="/images/hero-glass.png" alt="Glass 1">
+                    </div>
+                    <div class="product-info">
+                        <h3>Sleek Glass Dining</h3>
+                        <p>Tempered glass top with stainless steel frame.</p>
+                        <button class="btn btn-primary" onclick="sendWhatsApp('Sleek Glass Dining')">Enquire on WhatsApp</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-about">
+                    <a href="index.html" class="logo">Bhu<span class="green">v</span>i Aar<span class="green">y</span>a<span class="yellow">Enterprises</span></a>
+                    <p>Your one-stop destination for premium furniture in Mangaluru.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="products.html">Products</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h4>Contact Info</h4>
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt"></i> Bolar, Mangaluru</li>
+                        <li><i class="fas fa-phone"></i> +91 90000 00000</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <a href="#" class="whatsapp-float" onclick="sendWhatsApp()">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <script type="module" src="main.js"></script>
+    <script>
+        // Filtering Logic
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const productCards = document.querySelectorAll('.product-card');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Update active button
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                const filter = btn.getAttribute('data-filter');
+
+                productCards.forEach(card => {
+                    if (filter === 'all' || card.getAttribute('data-category') === filter) {
+                        card.style.display = 'flex';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

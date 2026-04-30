@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bhuvi Aarya Entreprises | Premium Furniture in Mangaluru</title>
+    <meta name="description" content="Upgrade your living space with premium sofas, dining tables, and glass dining tables from Bhuvi Aarya Entreprises. Located in Mangaluru, India.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- Header -->
+    <header id="header">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                Bhu<span class="green">v</span>i Aar<span class="green">y</span>a<span class="yellow">Enterprises</span>
+            </a>
+            
+            <nav class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="products.html">Products</a>
+                <a href="about.html">About Us</a>
+                <a href="contact.html">Contact Us</a>
+            </nav>
+
+            <div class="header-actions">
+                <button id="theme-toggle" class="theme-toggle">
+                    <i class="fas fa-sun"></i>
+                </button>
+                <button id="mobile-menu-btn" class="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Nav -->
+    <div id="mobile-nav" class="mobile-nav">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="products.html">Products</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+        </ul>
+    </div>
+    <div id="overlay" class="overlay"></div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-slider">
+            <div class="slide active" style="background-image: url('/images/hero-sofa.png')"></div>
+            <div class="slide" style="background-image: url('/images/hero-dining.png')"></div>
+            <div class="slide" style="background-image: url('/images/hero-glass.png')"></div>
+        </div>
+        <div class="container">
+            <div class="hero-content">
+                <h1>Upgrade Your Living Space with Premium Furniture</h1>
+                <p>Elegant and affordable furniture for your home. Discover our exclusive collection of sofas and dining sets.</p>
+                <div class="hero-btns">
+                    <a href="products.html" class="btn btn-primary">View Products</a>
+                    <a href="contact.html" class="btn btn-outline">Contact Us</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Intro Section -->
+    <section class="intro">
+        <div class="container">
+            <div class="intro-grid">
+                <div class="intro-text">
+                    <h2>Modern Living, Timeless Elegance</h2>
+                    <p>At Bhuvi Aarya Entreprises, we believe that furniture is not just about utility; it's about creating an atmosphere. Based in the heart of Mangaluru, we bring you the finest craftsmanship and modern designs.</p>
+                    <div class="intro-highlights">
+                        <div class="highlight-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Quality Materials</span>
+                        </div>
+                        <div class="highlight-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Affordable Pricing</span>
+                        </div>
+                        <div class="highlight-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Stylish Designs</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="intro-image">
+                    <img src="/images/showroom.png" alt="Showroom Interior">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Latest Products Section -->
+    <section class="latest-products">
+        <div class="container">
+            <h2>Our Latest Collections</h2>
+            <div class="product-grid">
+                <!-- Product 1 -->
+                <div class="product-card">
+                    <div class="product-img">
+                        <img src="/images/hero-sofa.png" alt="Premium L-Sofa">
+                    </div>
+                    <div class="product-info">
+                        <h3>Premium L-Sofa</h3>
+                        <p>Plush seating with ergonomic design, perfect for modern living rooms.</p>
+                        <button class="btn btn-primary" onclick="sendWhatsApp('Premium L-Sofa')">Enquire on WhatsApp</button>
+                    </div>
+                </div>
+                <!-- Product 2 -->
+                <div class="product-card">
+                    <div class="product-img">
+                        <img src="/images/hero-dining.png" alt="Wooden Dining Set">
+                    </div>
+                    <div class="product-info">
+                        <h3>Royal Wooden Dining</h3>
+                        <p>Hand-crafted 6-seater wooden dining table with premium finish.</p>
+                        <button class="btn btn-primary" onclick="sendWhatsApp('Royal Wooden Dining')">Enquire on WhatsApp</button>
+                    </div>
+                </div>
+                <!-- Product 3 -->
+                <div class="product-card">
+                    <div class="product-img">
+                        <img src="/images/hero-glass.png" alt="Glass Dining Table">
+                    </div>
+                    <div class="product-info">
+                        <h3>Modern Glass Dining</h3>
+                        <p>Sleek glass top with designer legs, adding a touch of sophistication.</p>
+                        <button class="btn btn-primary" onclick="sendWhatsApp('Modern Glass Dining')">Enquire on WhatsApp</button>
+                    </div>
+                </div>
+                <!-- Product 4 -->
+                <div class="product-card">
+                    <div class="product-img">
+                        <img src="/images/showroom.png" alt="Designer Armchair">
+                    </div>
+                    <div class="product-info">
+                        <h3>Designer Armchair</h3>
+                        <p>Comfort meets style in this premium accent piece.</p>
+                        <button class="btn btn-primary" onclick="sendWhatsApp('Designer Armchair')">Enquire on WhatsApp</button>
+                    </div>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 3rem;">
+                <a href="products.html" class="btn btn-secondary">View All Products</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us -->
+    <section class="why-us">
+        <div class="container">
+            <h2 style="text-align: center; margin-bottom: 3rem;">Why Choose Us</h2>
+            <div class="why-us-grid">
+                <div class="feature-box">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>Durable Materials</h3>
+                    <p>We use high-grade wood, glass, and fabrics that stand the test of time.</p>
+                </div>
+                <div class="feature-box">
+                    <i class="fas fa-couch"></i>
+                    <h3>Modern Designs</h3>
+                    <p>Our collection is curated to match contemporary interior trends.</p>
+                </div>
+                <div class="feature-box">
+                    <i class="fas fa-store"></i>
+                    <h3>Local Business</h3>
+                    <p>Trusted furniture showroom serving the Mangaluru community for years.</p>
+                </div>
+                <div class="feature-box">
+                    <i class="fas fa-tag"></i>
+                    <h3>Affordable Pricing</h3>
+                    <p>Premium luxury at prices that won't break your bank.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Location Map -->
+    <section class="map-section">
+        <div class="map-container">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d15559.580334385924!2d74.83914756028949!3d12.850052449266446!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1sGujjarakere%20Road%2C%20Jeppu%20Market%20Rd%2C%20Bolar%2C%20Mangaluru!5e0!3m2!1sen!2sin!4v1777571956712!5m2!1sen!2sin" allowfullscreen="" loading="lazy"></iframe>
+        </div>
+    </section>
+
+    <!-- CTA Banner -->
+    <section class="cta-banner">
+        <div class="container">
+            <h2>Visit Our Store Today</h2>
+            <p>Experience the comfort and quality in person at our Mangaluru showroom.</p>
+            <div class="cta-btns">
+                <a href="https://maps.app.goo.gl/..." target="_blank" class="btn">Get Directions</a>
+                <button class="btn" onclick="sendWhatsApp()">Chat on WhatsApp</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-about">
+                    <a href="index.html" class="logo">Bhu<span class="green">v</span>i Aar<span class="green">y</span>a<span class="yellow">Enterprises</span></a>
+                    <p>Your one-stop destination for premium furniture in Mangaluru. We specialize in sofas, dining sets, and custom interiors.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="products.html">Products</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Categories</h4>
+                    <ul>
+                        <li><a href="products.html?cat=sofas">Sofas</a></li>
+                        <li><a href="products.html?cat=dining">Dining Tables</a></li>
+                        <li><a href="products.html?cat=glass">Glass Tables</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h4>Contact Info</h4>
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt"></i> Gujjarakere Road, Jeppu Market Rd, Bolar, Mangaluru</li>
+                        <li><i class="fas fa-phone"></i> +91 90000 00000</li>
+                        <li><i class="fas fa-envelope"></i> info@bhuviaarya.com</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Bhuvi Aarya Entreprises. All Rights Reserved. Designed by Graphitex Digitals.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Float -->
+    <a href="#" class="whatsapp-float" onclick="sendWhatsApp()">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <script type="module" src="main.js"></script>
+</body>
+</html>
