@@ -101,10 +101,24 @@ const styles = StyleSheet.create({
 });
 
 export const InvoicePDF = ({ sale, invoiceNumber }: { sale: any, invoiceNumber: string }) => {
-  const subtotal = sale.total_amount;
-  const gstRate = 0.18; // 18% GST
-  const gstAmount = subtotal * (gstRate / (1 + gstRate)); // Assuming price is GST inclusive
-  const basePrice = subtotal - gstAmount;
+  const items = sale.items || [sale];
+  
+  // Calculate totals
+  let totalBasePrice = 0;
+  let totalGstAmount = 0;
+  let totalGrandAmount = sale.combined_total || sale.total_amount || 0;
+  const totalPaidAmount = sale.combined_paid || sale.paid_amount || 0;
+  const balanceDue = Math.max(0, totalGrandAmount - totalPaidAmount);
+
+  items.forEach((item: any) => {
+    const itemTotal = item.total_amount || 0;
+    const itemGstRate = (item.gst_percent || 18) / 100;
+    const gstAmt = itemTotal * (itemGstRate / (1 + itemGstRate));
+    const basePrice = itemTotal - gstAmt;
+
+    totalBasePrice += basePrice;
+    totalGstAmount += gstAmt;
+  });
 
   return (
     <Document>
@@ -131,7 +145,7 @@ export const InvoicePDF = ({ sale, invoiceNumber }: { sale: any, invoiceNumber: 
             <Text style={styles.label}>Date of Issue</Text>
             <Text style={{ fontWeight: 'bold' }}>{new Date(sale.created_at).toLocaleDateString('en-IN')}</Text>
             <Text style={[styles.label, { marginTop: 15 }]}>Payment Status</Text>
-            <Text style={{ fontWeight: 'bold', color: (sale.payment_status || '').toLowerCase() === 'paid' ? '#059669' : '#d97706' }}>
+            <Text style={{ fontWeight: 'bold', color: (sale.payment_status || '').toLowerCase() === 'paid' ? '#059669' : '#e11d48' }}>
               {(sale.payment_status || 'PENDING').toUpperCase()}
             </Text>
           </View>
@@ -144,27 +158,45 @@ export const InvoicePDF = ({ sale, invoiceNumber }: { sale: any, invoiceNumber: 
             <Text style={styles.col3}>Unit Price</Text>
             <Text style={styles.col4}>Total</Text>
           </View>
-          <View style={styles.tableRow}>
-            <Text style={styles.col1}>{sale.products?.name} ({sale.products?.sku || 'N/A'})</Text>
-            <Text style={styles.col2}>{sale.quantity || 1}</Text>
-            <Text style={styles.col3}>₹{(sale.unit_price || 0).toLocaleString()}</Text>
-            <Text style={styles.col4}>₹{(sale.total_amount || 0).toLocaleString()}</Text>
-          </View>
+          {items.map((item: any, i: number) => (
+            <View key={i} style={styles.tableRow}>
+              <Text style={styles.col1}>
+                {item.products?.name} ({item.products?.sku || 'N/A'})
+                {item.gst_percent && ` - GST ${item.gst_percent}%`}
+              </Text>
+              <Text style={styles.col2}>{item.quantity || 1}</Text>
+              <Text style={styles.col3}>₹{(item.unit_price || 0).toLocaleString()}</Text>
+              <Text style={styles.col4}>₹{(item.total_amount || 0).toLocaleString()}</Text>
+            </View>
+          ))}
         </View>
 
         <View style={styles.totals}>
           <View style={styles.totalRow}>
             <Text style={styles.totalLabel}>Subtotal (Excl. GST)</Text>
-            <Text style={styles.totalValue}>₹{basePrice.toLocaleString(undefined, { minimumFractionDigits: 2 })}</Text>
+            <Text style={styles.totalValue}>₹{totalBasePrice.toLocaleString(undefined, { minimumFractionDigits: 2 })}</Text>
           </View>
           <View style={styles.totalRow}>
-            <Text style={styles.totalLabel}>GST (18%)</Text>
-            <Text style={styles.totalValue}>₹{gstAmount.toLocaleString(undefined, { minimumFractionDigits: 2 })}</Text>
+            <Text style={styles.totalLabel}>Total GST</Text>
+            <Text style={styles.totalValue}>₹{totalGstAmount.toLocaleString(undefined, { minimumFractionDigits: 2 })}</Text>
           </View>
           <View style={[styles.totalRow, styles.grandTotal]}>
             <Text style={[styles.totalLabel, { color: '#059669' }]}>Grand Total</Text>
-            <Text style={styles.totalValue}>₹{(sale.total_amount || 0).toLocaleString()}</Text>
+            <Text style={styles.totalValue}>₹{totalGrandAmount.toLocaleString()}</Text>
           </View>
+
+          {sale.payment_status === 'pending' && (
+            <>
+              <View style={[styles.totalRow, { marginTop: 10 }]}>
+                <Text style={styles.totalLabel}>Amount Paid</Text>
+                <Text style={styles.totalValue}>₹{totalPaidAmount.toLocaleString()}</Text>
+              </View>
+              <View style={[styles.totalRow, { color: '#e11d48', fontWeight: 'bold' }]}>
+                <Text style={styles.totalLabel}>Balance Due</Text>
+                <Text style={styles.totalValue}>₹{balanceDue.toLocaleString()}</Text>
+              </View>
+            </>
+          )}
         </View>
 
         <View style={styles.footer}>

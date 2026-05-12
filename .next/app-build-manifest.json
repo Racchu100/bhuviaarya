@@ -31,15 +31,15 @@
       "static/chunks/main-app.js",
       "static/chunks/app/admin/page.js"
     ],
-    "/admin/customers/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/admin/customers/page.js"
-    ],
     "/admin/sales/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/admin/sales/page.js"
+    ],
+    "/admin/products/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/admin/products/page.js"
     ],
     "/admin/inventory/page": [
       "static/chunks/webpack.js",
@@ -51,15 +51,20 @@
       "static/chunks/main-app.js",
       "static/chunks/app/admin/billing/page.js"
     ],
-    "/admin/products/page": [
+    "/admin/customers/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/admin/products/page.js"
+      "static/chunks/app/admin/customers/page.js"
     ],
     "/admin/categories/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/admin/categories/page.js"
+    ],
+    "/api/categories/reorder/route": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/api/categories/reorder/route.js"
     ]
   }
 }
