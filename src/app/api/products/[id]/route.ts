@@ -3,14 +3,15 @@ import { supabase } from '@/lib/supabase';
 
 export async function PUT(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const updatedProduct = await request.json();
     const { data, error } = await supabase
       .from('products')
       .update(updatedProduct)
-      .eq('id', params.id)
+      .eq('id', id)
       .select()
       .single();
     
@@ -23,13 +24,14 @@ export async function PUT(
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const { error } = await supabase
       .from('products')
       .delete()
-      .eq('id', params.id);
+      .eq('id', id);
     
     if (error) throw error;
     return NextResponse.json({ message: 'Product deleted' });
