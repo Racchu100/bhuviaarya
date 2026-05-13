@@ -427,7 +427,7 @@ export default function SalesPage() {
         )}
       </AnimatePresence>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm relative overflow-hidden group">
           <div className="absolute top-0 right-0 w-32 h-32 bg-brand-green/5 rounded-full -translate-y-16 translate-x-16 group-hover:scale-110 transition-transform" />
           <div className="w-12 h-12 rounded-2xl bg-brand-green/10 flex items-center justify-center text-brand-green mb-6 relative z-10">
@@ -445,15 +445,6 @@ export default function SalesPage() {
           </div>
           <p className="text-slate-500 font-bold uppercase tracking-widest text-[10px] mb-1">Total Orders</p>
           <h3 className="text-3xl font-black text-slate-900">{sales.length}</h3>
-        </div>
-        <div className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm">
-          <div className="w-12 h-12 rounded-2xl bg-amber-500/10 flex items-center justify-center text-amber-500 mb-6">
-            <Clock className="w-6 h-6" />
-          </div>
-          <p className="text-slate-500 font-bold uppercase tracking-widest text-[10px] mb-1">Pending Orders</p>
-          <h3 className="text-3xl font-black text-slate-900">
-            {sales.filter(s => s.status === 'Pending').length}
-          </h3>
         </div>
       </div>
 

@@ -17,10 +17,12 @@ import {
   Clock,
   CheckCircle2,
   RefreshCcw,
-  ChevronRight
+  ChevronRight,
+  Trash2
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { supabase } from '@/lib/supabase';
+import { toast } from 'sonner';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import { InvoicePDF } from '@/components/InvoicePDF';
 import { clsx, type ClassValue } from 'clsx';
@@ -158,6 +160,53 @@ export default function BillingInvoices() {
 
     return true;
   });
+
+  const handleDeleteInvoice = async (inv: any) => {
+    if (!inv || !inv.id) {
+      alert('Error: Invalid invoice data');
+      return;
+    }
+
+    if (!confirm('Are you sure you want to delete this entire invoice and its items? This action cannot be undone.')) return;
+
+    try {
+      setIsRefreshing(true);
+      
+      // 1. Delete the invoice record FIRST to avoid FK constraints
+      const { error: invError } = await supabase.from('invoices').delete().eq('sale_id', inv.id);
+      if (invError) {
+        console.error('Invoice record delete error:', invError);
+        throw new Error('Failed to delete invoice record: ' + invError.message);
+      }
+
+      // 2. Delete all sales items in this group
+      const saleIds = inv.items.map((item: any) => item.id);
+      const { error: salesError } = await supabase.from('sales').delete().in('id', saleIds);
+      if (salesError) {
+        console.error('Sales items delete error:', salesError);
+        throw new Error('Failed to delete sales items: ' + salesError.message);
+      }
+
+      // 3. Update stock for deleted items
+      for (const item of inv.items) {
+        const { data: prod } = await supabase.from('products').select('total_stock, sold_quantity').eq('id', item.product_id).single();
+        if (prod) {
+          await supabase.from('products').update({
+            total_stock: (prod.total_stock || 0) + (item.quantity || 1),
+            sold_quantity: Math.max(0, (prod.sold_quantity || 0) - (item.quantity || 1))
+          }).eq('id', item.product_id);
+        }
+      }
+
+      toast.success('Invoice and associated items deleted successfully');
+      fetchData();
+    } catch (err: any) {
+      console.error('FULL DELETE ERROR:', err);
+      alert(err.message || 'An unexpected error occurred during deletion');
+    } finally {
+      setIsRefreshing(false);
+    }
+  };
 
   return (
     <div className="space-y-8 pb-20">
@@ -304,7 +353,7 @@ export default function BillingInvoices() {
                 <th className="px-8 py-6 text-[10px] font-black uppercase tracking-widest text-slate-400">Customer</th>
                 <th className="px-8 py-6 text-[10px] font-black uppercase tracking-widest text-slate-400">Items</th>
                 <th className="px-8 py-6 text-[10px] font-black uppercase tracking-widest text-slate-400">Amount</th>
-                <th className="px-8 py-6 text-[10px] font-black uppercase tracking-widest text-slate-400 text-right">Invoice</th>
+                <th className="px-8 py-6 text-[10px] font-black uppercase tracking-widest text-slate-400 text-right">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-50">
@@ -386,6 +435,13 @@ export default function BillingInvoices() {
                           >
                             <MessageCircle className="w-5 h-5" />
                           </a>
+                          <button 
+                            onClick={() => handleDeleteInvoice(inv)}
+                            className="p-2.5 rounded-xl bg-slate-50 text-slate-400 hover:text-rose-500 hover:bg-rose-50 transition-all"
+                            title="Delete Invoice"
+                          >
+                            <Trash2 className="w-5 h-5" />
+                          </button>
                         </div>
                       </td>
                     </tr>
