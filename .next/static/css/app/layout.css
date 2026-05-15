@@ -1549,6 +1549,9 @@
   .py-24 {
     padding-block: calc(var(--spacing) * 24);
   }
+  .pt-0 {
+    padding-top: calc(var(--spacing) * 0);
+  }
   .pt-1 {
     padding-top: calc(var(--spacing) * 1);
   }
@@ -1564,8 +1567,11 @@
   .pt-10 {
     padding-top: calc(var(--spacing) * 10);
   }
-  .pt-24 {
-    padding-top: calc(var(--spacing) * 24);
+  .pt-20 {
+    padding-top: calc(var(--spacing) * 20);
+  }
+  .pt-\[120px\] {
+    padding-top: 120px;
   }
   .pr-4 {
     padding-right: calc(var(--spacing) * 4);
@@ -3056,9 +3062,6 @@ h1, h2, h3, h4, h5, h6 {
 }
 .py-12 {
   padding-block: calc(var(--spacing) * 4);
-}
-.pt-24 {
-  padding-top: calc(var(--spacing) * 8);
 }
 .mb-16 {
   margin-bottom: calc(var(--spacing) * 4);

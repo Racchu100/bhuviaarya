@@ -99,7 +99,7 @@ export default function Hero() {
         </motion.div>
       </AnimatePresence>
 
-      <div className="relative z-10 h-full flex items-center justify-center text-center px-6">
+      <div className="relative z-10 h-full flex items-center justify-center text-center px-6 pt-20">
         <motion.div
           key={`content-${current}`}
           initial={{ y: 50, opacity: 0 }}

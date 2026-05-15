@@ -8,7 +8,7 @@ export default function AboutPage() {
   return (
     <>
       <Header />
-      <main className="pt-24 pb-16">
+      <main className="pt-0 pb-16">
         {/* Hero Section */}
         <section className="relative h-[60vh] flex items-center justify-center text-center px-6">
           <div className="absolute inset-0">
@@ -20,7 +20,7 @@ export default function AboutPage() {
             />
             <div className="absolute inset-0 bg-brand-dark/80" />
           </div>
-          <div className="relative z-10 container mx-auto">
+          <div className="relative z-10 container mx-auto pt-20">
             <h1 className="text-white text-2xl md:text-5xl font-bold mb-6 tracking-tight">Our Story</h1>
             <p className="text-white/60 text-sm md:text-lg max-w-2xl mx-auto font-light">
               Crafting comfort and style for Mangaluru homes since 2014.

@@ -93,7 +93,7 @@ export default function ProductsPage() {
   return (
     <>
       <Header />
-      <main className="pt-24 pb-16 min-h-screen">
+      <main className="pt-[120px] pb-16 min-h-screen">
         {/* Header Section */}
         <section className="bg-card py-2 md:py-4 mb-4 text-center">
           <div className="container mx-auto px-6 space-y-4">
