@@ -257,6 +257,9 @@ export default function SalesPage() {
         }).eq('id', saleToDelete.product_id);
       }
       
+      // Delete associated invoices first to avoid foreign key constraints
+      await supabase.from('invoices').delete().eq('sale_id', id);
+      
       const { error } = await supabase.from('sales').delete().eq('id', id);
       if (error) throw error;
 

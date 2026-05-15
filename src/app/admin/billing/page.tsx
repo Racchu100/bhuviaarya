@@ -172,15 +172,17 @@ export default function BillingInvoices() {
     try {
       setIsRefreshing(true);
       
-      // 1. Delete the invoice record FIRST to avoid FK constraints
-      const { error: invError } = await supabase.from('invoices').delete().eq('sale_id', inv.id);
+      // 1. Extract all sale IDs in this group
+      const saleIds = inv.items.map((item: any) => item.id);
+
+      // 2. Delete ALL associated invoice records FIRST to avoid FK constraints
+      const { error: invError } = await supabase.from('invoices').delete().in('sale_id', saleIds);
       if (invError) {
-        console.error('Invoice record delete error:', invError);
-        throw new Error('Failed to delete invoice record: ' + invError.message);
+        console.error('Invoice records delete error:', invError);
+        throw new Error('Failed to delete invoice records: ' + invError.message);
       }
 
-      // 2. Delete all sales items in this group
-      const saleIds = inv.items.map((item: any) => item.id);
+      // 3. Delete all sales items in this group
       const { error: salesError } = await supabase.from('sales').delete().in('id', saleIds);
       if (salesError) {
         console.error('Sales items delete error:', salesError);

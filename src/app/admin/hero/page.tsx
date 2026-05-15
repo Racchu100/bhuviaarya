@@ -119,18 +119,24 @@ export default function HeroAdmin() {
       let finalImageUrl = editingSlide ? editingSlide.image : '';
 
       if (imageFile) {
-        const formData = new FormData();
-        formData.append('file', imageFile);
-        const uploadRes = await fetch('/api/upload', {
-          method: 'POST',
-          body: formData
-        });
-        const uploadData = await uploadRes.json();
-        if (uploadRes.ok) {
-          finalImageUrl = uploadData.url;
-        } else {
-          throw new Error('Upload failed');
+        const fileExt = imageFile.name.split('.').pop();
+        const fileName = `${Date.now()}-${Math.random().toString(36).substring(2, 9)}.${fileExt}`;
+        const filePath = `hero/${fileName}`;
+
+        const { error: uploadError } = await supabase.storage
+          .from('images')
+          .upload(filePath, imageFile);
+
+        if (uploadError) {
+          console.error('Supabase Upload Error:', uploadError);
+          throw new Error(`Upload failed: ${uploadError.message}. Ensure an 'images' bucket exists in Supabase with public access.`);
         }
+
+        const { data: { publicUrl } } = supabase.storage
+          .from('images')
+          .getPublicUrl(filePath);
+        
+        finalImageUrl = publicUrl;
       }
 
       const slideData = {

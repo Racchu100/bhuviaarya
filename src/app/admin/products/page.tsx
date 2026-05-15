@@ -188,19 +188,26 @@ export default function AdminProducts() {
       }
 
       // 2. Upload image if a new one is selected
+      // 2. Upload image if a new one is selected
       if (imageFile) {
-        const formData = new FormData();
-        formData.append('file', imageFile);
-        const uploadRes = await fetch('/api/upload', {
-          method: 'POST',
-          body: formData
-        });
-        const uploadData = await uploadRes.json();
-        if (uploadRes.ok) {
-          finalImageUrl = uploadData.url;
-        } else {
-          throw new Error('Image upload failed');
+        const fileExt = imageFile.name.split('.').pop();
+        const fileName = `${Date.now()}-${Math.random().toString(36).substring(2, 9)}.${fileExt}`;
+        const filePath = `products/${fileName}`;
+
+        const { error: uploadError } = await supabase.storage
+          .from('images')
+          .upload(filePath, imageFile);
+
+        if (uploadError) {
+          console.error('Supabase Upload Error:', uploadError);
+          throw new Error(`Upload failed: ${uploadError.message}. Make sure you have created an 'images' bucket in Supabase Storage with public access.`);
         }
+
+        const { data: { publicUrl } } = supabase.storage
+          .from('images')
+          .getPublicUrl(filePath);
+        
+        finalImageUrl = publicUrl;
       }
 
       const productData: any = {
