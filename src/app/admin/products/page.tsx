@@ -43,16 +43,11 @@ export default function AdminProducts() {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [filterLabel, setFilterLabel] = useState<string | null>(null);
-  const [isFilterMenuOpen, setIsFilterMenuOpen] = useState(false);
-  const filterMenuRef = useRef<HTMLDivElement>(null);
   
   // Form State
   const [name, setName] = useState('');
   const [category, setCategory] = useState('');
   const [description, setDescription] = useState('');
-  const [isNewArrival, setIsNewArrival] = useState(false);
-  const [isBestSeller, setIsBestSeller] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
 
@@ -77,20 +72,6 @@ export default function AdminProducts() {
     Promise.all([fetchCategories(), fetchProducts()]).finally(() => setIsLoading(false));
   }, []);
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (filterMenuRef.current && !filterMenuRef.current.contains(event.target as Node)) {
-        setIsFilterMenuOpen(false);
-      }
-    };
-
-    if (isFilterMenuOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-    }
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [isFilterMenuOpen]);
 
   const fetchCategories = async () => {
     if (!isConfigured) return;
@@ -226,8 +207,6 @@ export default function AdminProducts() {
         name: name.trim(),
         category: category || null,
         desc: description,
-        is_new_arrival: isNewArrival,
-        is_best_seller: isBestSeller,
         img: finalImageUrl,
         price: editingProduct ? editingProduct.price : 'Premium',
         sku: sku.trim(),
@@ -283,6 +262,24 @@ export default function AdminProducts() {
     if (!productToDelete) return;
 
     try {
+      // 1. Proactive check for related sales (Foreign Key constraint prevention)
+      const { data: sales, error: salesCheckError } = await supabase
+        .from('sales')
+        .select('id')
+        .eq('product_id', productToDelete.id)
+        .limit(1);
+
+      if (salesCheckError) {
+        console.error('Sales check error:', salesCheckError);
+      }
+
+      if (sales && sales.length > 0) {
+        toast.error('Cannot delete: This masterpiece is linked to existing sales records. Archive it instead by setting stock to zero.');
+        setProductToDelete(null);
+        return;
+      }
+
+      // 2. Proceed with deletion
       const { error } = await supabase
         .from('products')
         .delete()
@@ -295,9 +292,14 @@ export default function AdminProducts() {
       } else {
         throw error;
       }
-    } catch (err) { 
-      console.error(err);
-      toast.error('Error deleting product');
+    } catch (err: any) { 
+      console.error('Delete Error:', err);
+      if (err.code === '23503') {
+        toast.error('Cannot delete: This masterpiece is being used in sales or inventory records.');
+      } else {
+        toast.error(err.message || 'Error deleting product');
+      }
+      setProductToDelete(null);
     }
   };
 
@@ -306,10 +308,6 @@ export default function AdminProducts() {
     setName(product.name);
     setCategory(product.category);
     setDescription(product.desc || '');
-    setIsNewArrival(product.isNewArrival);
-    setIsBestSeller(product.isBestSeller);
-    setImagePreview(product.img);
-    // New fields
     setSku(product.sku || '');
     setBarcode(product.barcode || '');
     setTotalStock(product.total_stock || 0);
@@ -329,8 +327,6 @@ export default function AdminProducts() {
     setName('');
     setCategory('');
     setDescription('');
-    setIsNewArrival(false);
-    setIsBestSeller(false);
     setImageFile(null);
     setImagePreview(null);
     // New fields
@@ -350,15 +346,9 @@ export default function AdminProducts() {
   const filteredProducts = (Array.isArray(products) ? products : []).filter(p => {
     const searchLower = searchQuery.toLowerCase();
     const categoryName = (Array.isArray(categories) ? categories : []).find(c => c.id === p.category)?.name?.toLowerCase() || '';
-    const labels = [
-      p.isNewArrival ? 'new arrival' : '',
-      p.isBestSeller ? 'best seller' : ''
-    ].join(' ').toLowerCase();
-
     return (
       p.name.toLowerCase().includes(searchLower) ||
       categoryName.includes(searchLower) ||
-      labels.includes(searchLower) ||
       (p.sku && p.sku.toLowerCase().includes(searchLower))
     );
   });
@@ -400,53 +390,6 @@ export default function AdminProducts() {
               />
             </div>
 
-        <div className="flex items-center gap-2 w-full md:w-auto relative" ref={filterMenuRef}>
-          <button 
-            onClick={() => setIsFilterMenuOpen(!isFilterMenuOpen)}
-            className={cn(
-              "flex-1 md:flex-none flex items-center justify-center gap-2 px-6 py-3 rounded-2xl font-bold transition-all",
-              filterLabel 
-                ? "bg-brand-green text-white shadow-lg shadow-brand-green/20" 
-                : "bg-slate-50 text-slate-600 hover:bg-slate-100"
-            )}
-          >
-            <Filter className="w-4 h-4" />
-            {filterLabel === 'isNewArrival' ? 'New Arrivals' : filterLabel === 'isBestSeller' ? 'Best Sellers' : 'Filter'}
-          </button>
-
-          <AnimatePresence>
-            {isFilterMenuOpen && (
-              <motion.div
-                initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                className="absolute top-full right-0 mt-3 w-56 bg-white border border-slate-100 rounded-3xl shadow-2xl z-[60] p-2"
-              >
-                {[
-                  { id: null, name: 'All Masterpieces' },
-                  { id: 'isNewArrival', name: 'New Arrivals' },
-                  { id: 'isBestSeller', name: 'Best Sellers' }
-                ].map((item) => (
-                  <button
-                    key={item.id as any}
-                    onClick={() => {
-                      setFilterLabel(item.id);
-                      setIsFilterMenuOpen(false);
-                    }}
-                    className={cn(
-                      "w-full text-left px-5 py-3 rounded-2xl font-bold transition-all text-sm",
-                      filterLabel === item.id 
-                        ? "bg-brand-green/10 text-brand-green" 
-                        : "text-slate-600 hover:bg-slate-50"
-                    )}
-                  >
-                    {item.name}
-                  </button>
-                ))}
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
       </div>
 
       {/* Product Table */}
@@ -457,7 +400,6 @@ export default function AdminProducts() {
               <tr className="border-b border-slate-50">
                 <th className="px-8 py-6 text-[10px] font-black uppercase tracking-widest text-slate-400">Product</th>
                 <th className="px-8 py-6 text-[10px] font-black uppercase tracking-widest text-slate-400">Category</th>
-                <th className="px-8 py-6 text-[10px] font-black uppercase tracking-widest text-slate-400">Labels</th>
                 <th className="px-8 py-6 text-[10px] font-black uppercase tracking-widest text-slate-400">Actions</th>
               </tr>
             </thead>
@@ -484,20 +426,6 @@ export default function AdminProducts() {
                       <span className="px-4 py-1.5 rounded-full bg-slate-100 text-slate-600 text-[10px] font-black uppercase tracking-widest">
                         {categories.find(c => c.id === p.category)?.name || 'Uncategorized'}
                       </span>
-                    </td>
-                    <td className="px-8 py-6">
-                      <div className="flex flex-wrap gap-2">
-                        {p.isBestSeller && (
-                          <span className="px-3 py-1 rounded-full bg-brand-yellow/10 text-brand-dark text-[9px] font-black uppercase tracking-wider">
-                            Best Seller
-                          </span>
-                        )}
-                        {p.isNewArrival && (
-                          <span className="px-3 py-1 rounded-full bg-brand-green/10 text-brand-green text-[9px] font-black uppercase tracking-wider">
-                            New Arrival
-                          </span>
-                        )}
-                      </div>
                     </td>
                     <td className="px-8 py-6">
                       <div className="flex items-center gap-2">

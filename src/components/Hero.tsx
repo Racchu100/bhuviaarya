@@ -5,42 +5,83 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
-const slides = [
+import { supabase } from '@/lib/supabase';
+
+const fallbackSlides = [
   {
-    image: '/images/sofa_hero.png',
-    title: 'Modern Living, Timeless Elegance',
-    subtitle: 'Premium sofas crafted for comfort and style.',
+    image: '/images/hero_1.png',
+    title: 'Luxury Living, Redefined',
+    subtitle: 'Premium sofas and elegant curtains designed for modern homes.',
     cta: 'Explore Sofas',
     href: '/products?category=sofas',
   },
   {
-    image: '/images/dining_hero.png',
-    title: 'Royal Dining Experiences',
-    subtitle: 'Hand-crafted wooden dining sets for your home.',
+    image: '/images/hero_2.png',
+    title: 'Majestic Dining Spaces',
+    subtitle: 'Exquisite solid wood tables and bespoke upholstered chairs.',
     cta: 'View Collections',
     href: '/products?category=dining',
   },
   {
-    image: '/images/glass_dining_hero.png',
-    title: 'Sophisticated Glass Designs',
-    subtitle: 'Sleek and modern dining tables for contemporary spaces.',
+    image: '/images/hero_3.png',
+    title: 'Custom Crafted for You',
+    subtitle: 'Bespoke furniture solutions to transform your living space.',
     cta: 'Discover More',
     href: '/products?category=glass',
   },
 ];
 
 export default function Hero() {
+  const [slides, setSlides] = useState<any[]>(fallbackSlides);
   const [current, setCurrent] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    fetchSlides();
+  }, []);
+
+  const fetchSlides = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('hero_slides')
+        .select('*')
+        .order('order_index', { ascending: true });
+
+      if (error) throw error;
+      if (data && data.length > 0) {
+        setSlides(data.map(s => ({
+          image: s.image,
+          title: s.title,
+          subtitle: s.subtitle,
+          cta: s.cta_text,
+          href: s.cta_link
+        })));
+      }
+    } catch (err) {
+      console.warn('Hero slides fetch error, using fallbacks:', err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (slides.length <= 1) return;
     const timer = setInterval(() => {
       setCurrent((prev) => (prev + 1) % slides.length);
     }, 6000);
     return () => clearInterval(timer);
-  }, []);
+  }, [slides.length]);
 
   const next = () => setCurrent((prev) => (prev + 1) % slides.length);
   const prev = () => setCurrent((prev) => (prev - 1 + slides.length) % slides.length);
+
+  if (isLoading) {
+    return (
+      <div className="h-screen w-full bg-brand-dark flex items-center justify-center">
+        <div className="w-12 h-12 border-4 border-brand-green border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
+  }
 
   return (
     <section className="relative h-screen w-full overflow-hidden">
@@ -90,30 +131,34 @@ export default function Hero() {
       </div>
 
       {/* Slider Controls */}
-      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 flex gap-4">
-        {slides.map((_, i) => (
-          <button
-            key={i}
-            onClick={() => setCurrent(i)}
-            className={`w-12 h-1 rounded-full transition-all ${
-              i === current ? 'bg-brand-yellow' : 'bg-white/30 hover:bg-white/50'
-            }`}
-          />
-        ))}
-      </div>
+      {slides.length > 1 && (
+        <>
+          <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 flex gap-4">
+            {slides.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setCurrent(i)}
+                className={`w-12 h-1 rounded-full transition-all ${
+                  i === current ? 'bg-brand-yellow' : 'bg-white/30 hover:bg-white/50'
+                }`}
+              />
+            ))}
+          </div>
 
-      <button
-        onClick={prev}
-        className="absolute left-6 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full glass hover:bg-brand-green/20 text-white hidden md:block"
-      >
-        <ChevronLeft className="w-8 h-8" />
-      </button>
-      <button
-        onClick={next}
-        className="absolute right-6 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full glass hover:bg-brand-green/20 text-white hidden md:block"
-      >
-        <ChevronRight className="w-8 h-8" />
-      </button>
+          <button
+            onClick={prev}
+            className="absolute left-6 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full glass hover:bg-brand-green/20 text-white hidden md:block"
+          >
+            <ChevronLeft className="w-8 h-8" />
+          </button>
+          <button
+            onClick={next}
+            className="absolute right-6 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full glass hover:bg-brand-green/20 text-white hidden md:block"
+          >
+            <ChevronRight className="w-8 h-8" />
+          </button>
+        </>
+      )}
     </section>
   );
 }

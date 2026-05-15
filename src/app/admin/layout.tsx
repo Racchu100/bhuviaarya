@@ -14,7 +14,9 @@ import {
   ClipboardList,
   Users,
   IndianRupee,
-  FileText
+  FileText,
+  Image as ImageIcon,
+  Settings
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { clsx, type ClassValue } from 'clsx';
@@ -26,12 +28,14 @@ function cn(...inputs: ClassValue[]) {
 
 const menuItems = [
   { name: 'Dashboard', href: '/admin', icon: LayoutDashboard },
+  { name: 'Hero Section', href: '/admin/hero', icon: ImageIcon },
   { name: 'Categories', href: '/admin/categories', icon: Tags },
   { name: 'Products', href: '/admin/products', icon: Package },
   { name: 'Inventory', href: '/admin/inventory', icon: ClipboardList },
   { name: 'Customers', href: '/admin/customers', icon: Users },
   { name: 'Sales', href: '/admin/sales', icon: IndianRupee },
   { name: 'Billing', href: '/admin/billing', icon: FileText },
+  { name: 'Settings', href: '/admin/settings', icon: Settings },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {

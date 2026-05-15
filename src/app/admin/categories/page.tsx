@@ -9,7 +9,8 @@ import {
   ChevronRight,
   FolderTree,
   X,
-  GripVertical
+  GripVertical,
+  ChevronDown
 } from 'lucide-react';
 import { motion, AnimatePresence, Reorder } from 'framer-motion';
 import { clsx, type ClassValue } from 'clsx';
@@ -55,7 +56,7 @@ export default function AdminCategories() {
   };
 
   const handleReorder = async (newOrder: any[]) => {
-    const subCategories = categories.filter(c => c.parentId);
+    const subCategories = categories.filter(c => c.parent_id);
     const updatedCategories = [...newOrder, ...subCategories];
     setCategories(updatedCategories);
 
@@ -151,11 +152,11 @@ export default function AdminCategories() {
   const startEdit = (cat: any) => {
     setEditingCategory(cat);
     setNewCatName(cat.name);
-    setParentCatId(cat.parentId || '');
+    setParentCatId(cat.parent_id || '');
     setIsAdding(true);
   };
 
-  const mainCategories = categories.filter(c => !c.parentId);
+  const mainCategories = categories.filter(c => !c.parent_id);
 
   return (
     <div className="space-y-8 pb-20">
@@ -231,7 +232,7 @@ export default function AdminCategories() {
                     
                     {/* Sub-categories */}
                     <div className="pl-12 space-y-2">
-                      {categories.filter(sub => sub.parentId === cat.id).map(sub => (
+                      {categories.filter(sub => sub.parent_id === cat.id).map(sub => (
                         <div key={sub.id} className="flex items-center justify-between p-3 bg-white rounded-xl border border-slate-100 group hover:border-brand-green/20 transition-all">
                           <div className="flex items-center gap-2">
                             <ChevronRight className="w-3 h-3 text-slate-300" />
@@ -334,16 +335,22 @@ export default function AdminCategories() {
 
                 <div className="space-y-3">
                   <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Parent Category (Optional)</label>
-                  <select 
-                    className="w-full px-6 py-4 bg-slate-50 border-transparent rounded-2xl focus:bg-white focus:border-brand-green focus:ring-4 focus:ring-brand-green/5 transition-all outline-none font-bold text-slate-900 appearance-none cursor-pointer"
-                    value={parentCatId}
-                    onChange={(e) => setParentCatId(e.target.value)}
-                  >
-                    <option value="">None (Top Level)</option>
-                    {mainCategories.map(cat => (
-                      <option key={cat.id} value={cat.id}>{cat.name}</option>
-                    ))}
-                  </select>
+                  <div className="relative">
+                    <select 
+                      className="w-full px-6 py-4 bg-slate-50 border-transparent rounded-2xl focus:bg-white focus:border-brand-green focus:ring-4 focus:ring-brand-green/5 transition-all outline-none font-bold text-slate-900 appearance-none cursor-pointer"
+                      value={parentCatId}
+                      onChange={(e) => setParentCatId(e.target.value)}
+                    >
+                      <option value="">None (Top Level)</option>
+                      {mainCategories
+                        .filter(cat => !editingCategory || cat.id !== editingCategory.id)
+                        .map(cat => (
+                          <option key={cat.id} value={cat.id}>{cat.name}</option>
+                        ))
+                      }
+                    </select>
+                    <ChevronDown className="absolute right-6 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 pointer-events-none" />
+                  </div>
                 </div>
 
                 <div className="pt-4 flex gap-4">

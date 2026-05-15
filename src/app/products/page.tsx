@@ -25,7 +25,6 @@ export default function ProductsPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [filterLabel, setFilterLabel] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
   const itemsPerPage = 6;
@@ -86,11 +85,7 @@ export default function ProductsPage() {
 
   const filteredProducts = products
     .filter(p => (activeTab === 'all' || p.category === activeTab))
-    .filter(p => p.name.toLowerCase().includes(searchQuery.toLowerCase()))
-    .filter(p => {
-      if (!filterLabel) return true;
-      return filterLabel === 'isNewArrival' ? p.isNewArrival : p.isBestSeller;
-    });
+    .filter(p => p.name.toLowerCase().includes(searchQuery.toLowerCase()));
 
   const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
   const currentProducts = filteredProducts.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
@@ -110,38 +105,6 @@ export default function ProductsPage() {
         </section>
 
         <div className="container mx-auto px-6" ref={collectionRef}>
-          {/* Quick Filter Buttons */}
-          <div className="flex flex-wrap justify-center gap-2 md:gap-3 mb-5">
-            <button
-              onClick={() => {
-                setFilterLabel(filterLabel === 'isNewArrival' ? null : 'isNewArrival');
-                setCurrentPage(1);
-              }}
-              className={cn(
-                "px-5 md:px-7 py-2.5 rounded-full text-[9px] md:text-[10px] font-black uppercase tracking-widest transition-all shadow-md border-2",
-                filterLabel === 'isNewArrival'
-                  ? "bg-brand-green text-white border-brand-green scale-105 opacity-100 ring-4 ring-brand-green/30"
-                  : "bg-brand-green/80 text-white border-brand-green/10 hover:bg-brand-green/100"
-              )}
-            >
-              New Arrivals
-            </button>
-            <button
-              onClick={() => {
-                setFilterLabel(filterLabel === 'isBestSeller' ? null : 'isBestSeller');
-                setCurrentPage(1);
-              }}
-              className={cn(
-                "px-5 md:px-7 py-2.5 rounded-full text-[9px] md:text-[10px] font-black uppercase tracking-widest transition-all shadow-md border-2",
-                filterLabel === 'isBestSeller'
-                  ? "bg-brand-yellow text-black border-brand-yellow scale-105 opacity-100 ring-4 ring-brand-yellow/30 font-black"
-                  : "bg-brand-yellow/80 text-black border-brand-yellow/10 hover:bg-brand-yellow/100"
-              )}
-            >
-              Best Sellers
-            </button>
-          </div>
-
           {/* Controls: Search & Categories */}
           <div className="flex flex-row items-center justify-center gap-2 md:gap-4 mb-12">
               <div className="relative flex-1 max-w-md group">

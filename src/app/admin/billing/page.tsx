@@ -426,15 +426,6 @@ export default function BillingInvoices() {
                               </button>
                             )}
                           </PDFDownloadLink>
-                          <a 
-                            href={`https://wa.me/${inv.customers?.phone?.replace(/\D/g, '')}?text=${encodeURIComponent(`Hello ${inv.customers?.name}, your invoice ${invNum} for ₹${inv.combined_total.toLocaleString()} is ready. Please find it attached.`)}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="p-2.5 rounded-xl bg-slate-50 text-slate-400 hover:text-[#25D366] hover:bg-[#25D366]/10 transition-all"
-                            title="Share on WhatsApp"
-                          >
-                            <MessageCircle className="w-5 h-5" />
-                          </a>
                           <button 
                             onClick={() => handleDeleteInvoice(inv)}
                             className="p-2.5 rounded-xl bg-slate-50 text-slate-400 hover:text-rose-500 hover:bg-rose-50 transition-all"
