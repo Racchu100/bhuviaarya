@@ -13,7 +13,7 @@ export default function AboutPage() {
         <section className="relative h-[60vh] flex items-center justify-center text-center px-6">
           <div className="absolute inset-0">
             <Image
-              src="/images/showroom.png"
+              src="/images/showroom_v2.png"
               alt="Bhuvi Aarya Journey"
               fill
               className="object-cover"
