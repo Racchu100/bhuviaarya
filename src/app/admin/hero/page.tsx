@@ -286,11 +286,10 @@ VALUES
               >
                 {/* Preview Image */}
                 <div className="relative w-full md:w-64 h-48 rounded-[2rem] overflow-hidden bg-slate-50 shrink-0">
-                  <Image
+                  <img
                     src={slide.image}
                     alt={slide.title}
-                    fill
-                    className="object-cover"
+                    className="w-full h-full object-cover"
                   />
                   <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-black text-slate-900 uppercase tracking-widest shadow-lg">
                     Slide {index + 1}
@@ -409,7 +408,7 @@ VALUES
                   >
                     {imagePreview ? (
                       <>
-                        <Image src={imagePreview} alt="Preview" fill className="object-cover" />
+                        <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
                         <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                           <div className="bg-white/90 backdrop-blur-md p-4 rounded-2xl flex items-center gap-2 font-black text-slate-900">
                             <Upload className="w-5 h-5" /> Change Image

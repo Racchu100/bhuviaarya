@@ -419,7 +419,7 @@ export default function AdminProducts() {
                     <td className="px-8 py-6">
                       <div className="flex items-center gap-4">
                         <div className="w-16 h-16 rounded-2xl bg-slate-100 overflow-hidden flex-shrink-0 relative">
-                          <Image src={p.img} alt={p.name} fill className="object-cover" />
+                          <img src={p.img} alt={p.name} className="w-full h-full object-cover" />
                         </div>
                         <div>
                           <h4 className="font-bold text-slate-900 leading-tight">{p.name}</h4>
@@ -512,7 +512,7 @@ export default function AdminProducts() {
                   >
                     {imagePreview ? (
                       <div className="absolute inset-0 w-full h-full">
-                        <Image src={imagePreview} alt="Preview" fill className="object-cover" />
+                        <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
                         <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                           <p className="text-white font-bold text-sm">Change Image</p>
                         </div>
