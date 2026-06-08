@@ -54,7 +54,7 @@ export default function HeroAdmin() {
         .order('order_index', { ascending: true });
 
       if (error) {
-        if (error.message.includes('relation "hero_slides" does not exist')) {
+        if (error.message.includes('relation') && error.message.includes('hero_slides') && error.message.includes('does not exist')) {
           setTableExists(false);
         } else {
           throw error;

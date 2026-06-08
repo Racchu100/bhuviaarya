@@ -46,7 +46,7 @@ export default function SettingsPage() {
         .single();
 
       if (error) {
-        if (error.message.includes('relation "business_settings" does not exist')) {
+        if (error.message.includes('relation') && error.message.includes('business_settings') && error.message.includes('does not exist')) {
           setTableExists(false);
         } else if (error.code === 'PGRST116') {
           // Row doesn't exist, we'll create it on save

@@ -45,7 +45,7 @@ export default function Header() {
         <Link href="/" className="flex items-center group whitespace-nowrap">
           <div className="flex flex-col leading-none">
             <h1 className="text-lg md:text-xl font-black tracking-tight text-white">
-              BHU<span className="text-brand-green">VI</span> AAR<span className="text-brand-green">YA</span>
+              BHU<span className="text-brand-green">V</span>I AAR<span className="text-brand-green">Y</span>A
             </h1>
             <span className="text-brand-yellow text-sm md:text-lg font-serif tracking-widest leading-tight">
               Enterprises
